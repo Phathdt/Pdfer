@@ -1,0 +1,36 @@
+{
+  "name": "pdfer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon -w src --exec babel-node src/index.js",
+    "clean": "rm -rf dist",
+    "build": "babel src -d dist -s --presets  @babel/preset-env",
+    "start": "node dist"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "multer": "^1.4.3",
+    "nanoid": "^3.1.29",
+    "puppeteer": "^10.4.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/node": "^7.15.8",
+    "@babel/plugin-transform-runtime": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/runtime": "^7.15.4",
+    "babel-eslint": "10.x",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "eslint": "8.x",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "2.x",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.13",
+    "prettier": "^2.4.1"
+  }
+}

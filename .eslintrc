@@ -1,0 +1,21 @@
+{
+  "root": true,
+  "extends": ["prettier", "react-app"],
+  "plugins": ["prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "impliedStrict": true
+    }
+  },
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_|next|info|req|res",
+        "caughtErrors": "all"
+      }
+    ]
+  },
+  "parser": "babel-eslint"
+}
