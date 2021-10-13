@@ -1,13 +1,15 @@
+import fs from 'fs'
+import path from 'path'
+
+import { addRequestId, morganError, morganSuccess } from '@middleware'
 import cors from 'cors'
 import express from 'express'
 import asyncHandler from 'express-async-handler'
 import multer from 'multer'
-import path from 'path'
-import fs from 'fs'
-import puppeteer from 'puppeteer'
 import { customAlphabet } from 'nanoid'
-const nanoid = customAlphabet('1234567890abcdef', 10)
+import puppeteer from 'puppeteer'
 
+const nanoid = customAlphabet('1234567890abcdef', 10)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './uploads/')
@@ -26,6 +28,9 @@ const upload = multer({
 
 const app = express()
 
+app.use(addRequestId)
+app.use(morganSuccess)
+app.use(morganError)
 app.use(cors())
 
 app.get('/ping', (_, res) => {
@@ -71,6 +76,12 @@ const convert = async ({ file }, res, next) => {
 }
 
 app.post('/convert', asyncHandler(upload.single('file')), asyncHandler(convert))
+
+app.use(function (req, res) {
+  res.status(404).json({
+    msg: '404 not found',
+  })
+})
 
 const PORT = 5000
 

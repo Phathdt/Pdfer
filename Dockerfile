@@ -6,7 +6,7 @@ COPY . .
 RUN yarn build
 
 FROM zenika/alpine-chrome:89-with-puppeteer
-WORKDIR /usr/src/app
+WORKDIR /usr/src/pdfer
 USER root
 RUN apk add --no-cache msttcorefonts-installer fontconfig ttf-freefont
 RUN update-ms-fonts
