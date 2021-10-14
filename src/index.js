@@ -90,6 +90,4 @@ const start = async () => {
   console.log(`Server started on port ${PORT}`)
 }
 
-app.listen(PORT, async () => {
-  await start()
-})
+app.listen(PORT, async () => await start())
