@@ -37,20 +37,10 @@ app.get('/ping', (_, res) => {
   res.json({ msg: 'pong' })
 })
 
-const convert = async ({ file }, res, next) => {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      '--disable-gpu',
-      '--disable-dev-shm-usage',
-      '--disable-setuid-sandbox',
-      '--no-sandbox',
-    ],
-  })
-
+const convert = async ({ file }, res, _next) => {
   const page = await browser.newPage()
 
-  const content = await fs.readFileSync(
+  const content = fs.readFileSync(
     `${path.join(__dirname, `/../${file.path}`)}`,
     { encoding: 'utf8', flag: 'r' }
   )
@@ -67,8 +57,7 @@ const convert = async ({ file }, res, next) => {
     },
   })
 
-  browser.close()
-
+  await page.close()
   await fs.promises.unlink(`${path.join(__dirname, `/../${file.path}`)}`)
 
   res.contentType('application/pdf')
@@ -85,4 +74,22 @@ app.use(function (req, res) {
 
 const PORT = 5000
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+let browser
+
+const start = async () => {
+  browser = await puppeteer.launch({
+    headless: true,
+    args: [
+      '--disable-gpu',
+      '--disable-dev-shm-usage',
+      '--disable-setuid-sandbox',
+      '--no-sandbox',
+    ],
+  })
+
+  console.log(`Server started on port ${PORT}`)
+}
+
+app.listen(PORT, async () => {
+  await start()
+})
