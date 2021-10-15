@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as puppeteer from 'puppeteer';
 
 @Injectable()
 export class AppService {
   private browser: puppeteer.Browser;
+  private logger: Logger = new Logger('PUPPETEER');
 
-  async generatePdf(file: Express.Multer.File): Promise<Buffer> {
-    if (!!!this.browser) {
+  constructor() {
+    const createBrowser = async () => {
+      this.logger.log('Launching browser...');
+
       this.browser = await puppeteer.launch({
         headless: true,
         args: [
@@ -16,8 +19,21 @@ export class AppService {
           '--no-sandbox',
         ],
       });
-    }
+      this.browser.on('disconnected', () => {
+        this.logger.log('Disconnected');
 
+        createBrowser();
+      });
+
+      this.logger.log('Init...Done');
+    };
+
+    (async () => {
+      await createBrowser();
+    })();
+  }
+
+  async generatePdf(file: Express.Multer.File): Promise<Buffer> {
     const page = await this.browser.newPage();
     await page.setContent(file.buffer.toString());
 
