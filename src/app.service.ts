@@ -22,6 +22,9 @@ export class AppService {
       this.browser.on('disconnected', () => {
         this.logger.log('Disconnected');
 
+        if (this.browser.process() != null)
+          this.browser.process().kill('SIGINT');
+
         createBrowser();
       });
 
