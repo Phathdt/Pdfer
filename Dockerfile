@@ -13,6 +13,5 @@ RUN update-ms-fonts
 COPY package.json yarn.lock ./
 COPY --from=builder /usr/src/app/dist/ ./dist
 RUN yarn install --prod
-RUN mkdir uploads
 EXPOSE 5000
-CMD ["yarn", "start"]
+CMD ["node", "dist/main"]
